@@ -40,7 +40,7 @@ router.get('/', async (p_request, p_response) => {
                 }
                 else{
                     //otherwise just search for the start date
-                    search_query.date = startDate;
+                    search_query.date = p_request.query.startDate;
                 }
             }
             if(p_request.query.startTime){
@@ -53,7 +53,7 @@ router.get('/', async (p_request, p_response) => {
                 }
                 else{
                     //otherwise just search for the start time
-                    search_query.time = startTime;
+                    search_query.time = p_request.query.startTime;
                 }
             }
             if(p_request.query.seats){
