@@ -135,6 +135,9 @@ router.post('/', async (p_request, p_response) => {
     if(p_request.body.notes && p_request.body.notes.length > 0){
         new_reservation.notes = p_request.body.notes;
     }
+    if(p_request.body.status && p_request.body.status.length > 0){
+        new_reservation.status = p_request.body.status;
+    }
 
     //try to create the reservation in mongodb
     try{
@@ -207,6 +210,9 @@ router.put('/', async (p_request, p_response) => {
         }
         if(p_request.body.tags){
             update_query.tags = p_request.body.tags;
+        }
+        if(p_request.body.status){
+            update_query.status = p_request.body.status;
         }
 
         //attempt to update the specified document id
