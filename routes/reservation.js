@@ -77,6 +77,10 @@ router.get('/', async (p_request, p_response) => {
                         $all:p_request.query.tags.split(',')
                     };
                 }
+                if(p_request.query.includeDeleted === false || p_request.query.includeDeleted === undefined){
+                    //do not include deleted reservations, or the specifier wasn't defined, we will not include delted reservations by default
+                    search_query.deleted = false; //only search reservations that aren't deleted
+                }
 
                 //p_response.send(search_query);
                 if(Object.keys(search_query).length > 0){
@@ -100,7 +104,6 @@ router.get('/', async (p_request, p_response) => {
                 }
                 else{
                     //there isn't a search query provided, so attempt to return all reservations
-                    //todo: implement a secret to prevent unauthorized access
                     const all_reservations = await Reservation.find({});
                     p_response.send({
                         result:'successful',
@@ -135,6 +138,7 @@ router.post('/', async (p_request, p_response) => {
             firstName:p_request.body.firstName,
             lastName:p_request.body.lastName,
             phoneNumber:p_request.body.phoneNumber,
+            deleted:false,
         });
 
         //populate optional fields if they exist
@@ -161,7 +165,8 @@ router.post('/', async (p_request, p_response) => {
                         firstName:p_request.body.firstName,
                         lastName:p_request.body.lastName
                     }
-                ]
+                ],
+                deleted:false,
             });
 
             if(existing_reservations.length > 0 && p_request.body.ignoreDuplicates !== true){
@@ -229,6 +234,9 @@ router.put('/', async (p_request, p_response) => {
             }
             if(p_request.body.status){
                 update_query.status = p_request.body.status;
+            }
+            if(p_request.body.deleted){
+                update_query.deleted = p_request.body.deleted;
             }
 
             //attempt to update the specified document id
@@ -325,17 +333,41 @@ router.put('/', async (p_request, p_response) => {
 router.delete('/', async (p_request, p_response) => {
     //check for the API_KEY in the headers first
     if(p_request.get(process.env.API_KEY_HEADER_NAME) === process.env.API_KEY){
+
         try{
             if(p_request.body.ids && p_request.body.ids.length > 0){
                 //there is an array of object ids to delete and the array is not empty
-                await Reservation.deleteMany({
-                    _id:{
-                        $in:p_request.body.ids
-                    }
-                });
-                p_response.send({
-                    result:'successful'
-                });
+
+                //now we check if the client specified the `permanent` flag to decide whether or not to permanently delete this reservation or just set the `deleted` property in the data model.
+                if(p_request.body.permanent){
+                    //flag was set to true, therefore do a destructive delete
+                    await Reservation.deleteMany({
+                        _id:{
+                            $in:p_request.body.ids
+                        }
+                    });
+
+                    //return a response
+                    p_response.send({
+                        result:'successful',
+                        message:'the specified reservations were PERMANENTLY deleted from this database'
+                    });
+                }
+                else{
+                    //flag was unset, do a soft delete
+
+                    await Reservation.updateMany({
+                        _id:{
+                            $in:p_request.body.ids,
+                        },
+                    }, { deleted : true });
+
+                    //return a response
+                    p_response.send({
+                        result:'successful',
+                        message:'the specified reservations were deleted from this database'
+                    });
+                }
             }
             else{
                 //ids doesn't exist in the request body, or the ids array is empty
@@ -351,6 +383,7 @@ router.delete('/', async (p_request, p_response) => {
                 message:`${e.name} - ${e.message}`
             });
         }
+
     }
     else {
         p_response.sendStatus(process.env.API_KEY_REJECTION_RESPONSE_CODE);

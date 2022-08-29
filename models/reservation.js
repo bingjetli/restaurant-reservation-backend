@@ -6,10 +6,11 @@ const reservation_schema = new mongoose.Schema({
     schemaVersion:{
         type:Number,
         required:true,
-        default:1.2, 
+        default:1.3, 
         /** schema changelog:
          * 1.1: firstName & lastName : uppercase:true -> lowercase:true
          * 1.2: added status as an optional field to the schema
+         * 1.3: added `deleted` as an optional field to the schema
         */
     },
     date:{
@@ -42,6 +43,10 @@ const reservation_schema = new mongoose.Schema({
         required:true,
         trim:true,
         lowercase:true,
+    },
+    deleted:{
+        type:Boolean,
+        required:true,
     },
     tags:{
         type:Array,
