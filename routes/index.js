@@ -14,7 +14,7 @@ router.get('/', (p_request, p_response) => {
     if(p_request.get(process.env.API_KEY_HEADER_NAME) === process.env.API_KEY){
         p_response.sendStatus(200);
         console.log('successful');
-    }
+    } 
     else{
         p_response.sendStatus(process.env.API_KEY_REJECTION_RESPONSE_CODE);
         console.log('failed');
