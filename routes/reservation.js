@@ -79,7 +79,7 @@ router.get('/', async (p_request, p_response) => {
                 }
                 if(p_request.query.includeDeleted === false || p_request.query.includeDeleted === undefined){
                     //do not include deleted reservations, or the specifier wasn't defined, we will not include delted reservations by default
-                    //search_query.deleted = false; //only search reservations that aren't deleted
+                    search_query.deleted = false; //only search reservations that aren't deleted
                 }
 
                 //p_response.send(search_query);
