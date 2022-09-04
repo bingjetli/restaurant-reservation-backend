@@ -231,7 +231,7 @@ router.put('/', async (p_request, p_response) => {
                     update_query.notes = p_request.body.notes;
                 }
                 else{
-                    update_query['$unset'] = {notes:''};
+                    update_query.$unset = {notes:''};
                 }
             }
             if(p_request.body.tags){
