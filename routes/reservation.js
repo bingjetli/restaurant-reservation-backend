@@ -230,7 +230,6 @@ router.put('/', async (p_request, p_response) => {
                 update_query.notes = p_request.body.notes;
             }
             else if(p_request.body.hasOwnProperty('notes')){
-                console.log('detected this');
                 update_query.$unset = {notes:''};
             }
 
@@ -246,9 +245,6 @@ router.put('/', async (p_request, p_response) => {
 
             //attempt to update the specified document id
             try{
-                console.log('attempting update');
-                console.log(update_query);
-                console.log(p_request.body);
                 //note: this function has limited validation support, use .save() for full validation support
                 await Reservation.findByIdAndUpdate(p_request.body.id, update_query, {runValidators:true});
                 p_response.send({
