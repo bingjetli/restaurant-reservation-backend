@@ -227,7 +227,6 @@ router.put('/', async (p_request, p_response) => {
                 update_query.phoneNumber = p_request.body.phoneNumber;
             }
             if(p_request.body.notes){
-                console.log(p_request.body.notes.length);
                 if(p_request.body.notes.length > 0){
                     update_query.notes = p_request.body.notes;
                 }
@@ -247,6 +246,8 @@ router.put('/', async (p_request, p_response) => {
 
             //attempt to update the specified document id
             try{
+                console.log('attempting update');
+                console.log(update_query);
                 //note: this function has limited validation support, use .save() for full validation support
                 await Reservation.findByIdAndUpdate(p_request.body.id, update_query, {runValidators:true});
                 p_response.send({
