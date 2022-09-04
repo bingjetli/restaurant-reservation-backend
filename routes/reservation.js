@@ -227,7 +227,12 @@ router.put('/', async (p_request, p_response) => {
                 update_query.phoneNumber = p_request.body.phoneNumber;
             }
             if(p_request.body.notes){
-                update_query.notes = p_request.body.notes;
+                if(p_request.body.notes.length > 0){
+                    update_query.notes = p_request.body.notes;
+                }
+                else{
+                    update_query['$unset'] = {notes:''};
+                }
             }
             if(p_request.body.tags){
                 update_query.tags = p_request.body.tags;
