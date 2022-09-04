@@ -248,6 +248,7 @@ router.put('/', async (p_request, p_response) => {
             try{
                 console.log('attempting update');
                 console.log(update_query);
+                console.log(p_request.body);
                 //note: this function has limited validation support, use .save() for full validation support
                 await Reservation.findByIdAndUpdate(p_request.body.id, update_query, {runValidators:true});
                 p_response.send({
