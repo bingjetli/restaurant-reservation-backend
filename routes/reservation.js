@@ -227,14 +227,13 @@ router.put('/', async (p_request, p_response) => {
                 update_query.phoneNumber = p_request.body.phoneNumber;
             }
             if(p_request.body.notes){
-                console.log('we got here');
-                if(p_request.body.notes.length > 0){
-                    update_query.notes = p_request.body.notes;
-                }
-                else{
-                    update_query.$unset = {notes:''};
-                }
+                update_query.notes = p_request.body.notes;
             }
+            else if(p_request.body.hasOwnProperty('notes')){
+                console.log('detected this');
+                update_query.$unset = {notes:''};
+            }
+
             if(p_request.body.tags){
                 update_query.tags = p_request.body.tags;
             }
