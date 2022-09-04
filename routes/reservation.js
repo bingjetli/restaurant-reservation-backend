@@ -227,6 +227,7 @@ router.put('/', async (p_request, p_response) => {
                 update_query.phoneNumber = p_request.body.phoneNumber;
             }
             if(p_request.body.notes){
+                console.log(p_request.body.notes.length);
                 if(p_request.body.notes.length > 0){
                     update_query.notes = p_request.body.notes;
                 }
