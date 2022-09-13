@@ -11,7 +11,7 @@ const router = express.Router();
 
 //handle the route
 router.get('/', (p_request, p_response) => {
-    if(p_request.get(process.env.API_KEY_HEADER_NAME) === process.env.API_KEY){
+    if(p_request.get(process.env.API_KEY_HEADER_NAME).toUpperCase() === process.env.API_KEY.toUpperCase()){
         p_response.sendStatus(200);
         console.log('successful');
     } 

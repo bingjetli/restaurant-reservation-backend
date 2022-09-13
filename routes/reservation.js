@@ -9,7 +9,7 @@ const router = express.Router();
 
 //handle the read route
 router.get('/', async (p_request, p_response) => {
-    if(p_request.get(process.env.API_KEY_HEADER_NAME) === process.env.API_KEY){
+    if(p_request.get(process.env.API_KEY_HEADER_NAME).toUpperCase() === process.env.API_KEY.toUpperCase()){
         //API_KEY_HEADER_NAME = the name of the HTTP Header containing the API_KEY
         try{
             if(p_request.query.id){
@@ -129,7 +129,7 @@ router.get('/', async (p_request, p_response) => {
 //handle create route
 router.post('/', async (p_request, p_response) => {
     //check for the API_KEY in the headers first
-    if(p_request.get(process.env.API_KEY_HEADER_NAME) === process.env.API_KEY){
+    if(p_request.get(process.env.API_KEY_HEADER_NAME).toUpperCase() === process.env.API_KEY.toUpperCase()){
         //create a new reservation object
         let new_reservation = new Reservation({
             date:p_request.body.date,
@@ -204,7 +204,7 @@ router.post('/', async (p_request, p_response) => {
 //handle update route
 router.put('/', async (p_request, p_response) => {
     //check for the API_KEY in the headers first
-    if(p_request.get(process.env.API_KEY_HEADER_NAME) === process.env.API_KEY){
+    if(p_request.get(process.env.API_KEY_HEADER_NAME).toUpperCase() === process.env.API_KEY.toUpperCase()){
         if(p_request.body.id){
             //object id is specified, build update query
             const update_query = {};
@@ -336,7 +336,7 @@ router.put('/', async (p_request, p_response) => {
 //handle delete route
 router.delete('/', async (p_request, p_response) => {
     //check for the API_KEY in the headers first
-    if(p_request.get(process.env.API_KEY_HEADER_NAME) === process.env.API_KEY){
+    if(p_request.get(process.env.API_KEY_HEADER_NAME).toUpperCase() === process.env.API_KEY.toUpperCase()){
 
         try{
             if(p_request.body.ids && p_request.body.ids.length > 0){

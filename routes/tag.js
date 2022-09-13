@@ -10,7 +10,7 @@ const router = express.Router();
 //handle the read route
 router.get('/', async (p_request, p_response) => {
     //check for the API_KEY in the headers first
-    if(p_request.get(process.env.API_KEY_HEADER_NAME) === process.env.API_KEY){
+    if(p_request.get(process.env.API_KEY_HEADER_NAME).toUpperCase() === process.env.API_KEY.toUpperCase()){
         try{
             if(p_request.query.id){
                 //tag document id is specified, return this specific document then
@@ -88,7 +88,7 @@ router.get('/', async (p_request, p_response) => {
 //handle create route
 router.post('/', async (p_request, p_response) => {
     //check for the API_KEY in the headers first
-    if(p_request.get(process.env.API_KEY_HEADER_NAME) === process.env.API_KEY){
+    if(p_request.get(process.env.API_KEY_HEADER_NAME).toUpperCase() === process.env.API_KEY.toUpperCase()){
         //create a new tag object
         let new_tag = new Tag({
             name:p_request.body.name,
@@ -137,7 +137,7 @@ router.post('/', async (p_request, p_response) => {
 //handle update route
 router.put('/', async (p_request, p_response) => {
     //check for the API_KEY in the headers first
-    if(p_request.get(process.env.API_KEY_HEADER_NAME) === process.env.API_KEY){
+    if(p_request.get(process.env.API_KEY_HEADER_NAME).toUpperCase() === process.env.API_KEY.toUpperCase()){
         if(p_request.body.id){
             //object id is specified, build update query
             const update_query = {};
@@ -241,7 +241,7 @@ router.put('/', async (p_request, p_response) => {
 //handle delete route
 router.delete('/', async (p_request, p_response) => {
     //check for the API_KEY in the headers first
-    if(p_request.get(process.env.API_KEY_HEADER_NAME) === process.env.API_KEY){
+    if(p_request.get(process.env.API_KEY_HEADER_NAME).toUpperCase() === process.env.API_KEY.toUpperCase()){
         try{
             if(p_request.body.ids && p_request.body.ids.length > 0){
                 //there is an array of object ids to delete and the array is not empty
