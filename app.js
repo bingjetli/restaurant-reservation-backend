@@ -36,7 +36,7 @@ app.use('/tags', tag_router);
 
 //start HTTP server
 const http = require('http');
-http.createServer(app).listen(process.env.PORT + 1, () => console.log(`HTTP listening on ${process.env.PORT + 1}`));
+http.createServer(app).listen(Number(process.env.PORT) + 1, () => console.log(`HTTP listening on ${Number(process.env.PORT) + 1}`));
 
 //start HTTPS server
 const https = require('https');
