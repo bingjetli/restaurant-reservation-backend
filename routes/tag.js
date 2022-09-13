@@ -155,67 +155,6 @@ router.put('/', async (p_request, p_response) => {
                 p_response.send({
                     result:'successful'
                 });
-
-                // //find the document id to update
-                // let reservation = await Reservation.findById(p_request.body.id);
-
-                // //update the reservation
-                // if(p_request.body.date){
-                //     reservation.date = p_request.body.date;
-                // }
-                // if(p_request.body.time){
-                //     reservation.time = p_request.body.time;
-                // }
-                // if(p_request.body.seats){
-                //     reservation.seats = p_request.body.seats;
-                // }
-                // if(p_request.body.firstName){
-                //     reservation.firstName = p_request.body.firstName;
-                // }
-                // if(p_request.body.lastName){
-                //     reservation.lastName = p_request.body.lastName;
-                // }
-                // if(p_request.body.phoneNumber){
-                //     reservation.phoneNumber = p_request.body.phoneNumber;
-                // }
-                // if(p_request.body.notes){
-                //     reservation.notes = p_request.body.notes;
-                // }
-                // if(p_request.body.tags){
-                //     reservation.tags = p_request.body.tags;
-                // }
-
-                // //check for duplicates, same date & time with either the same phone number or name
-                // const existing_reservations = await Reservation.find({
-                //     date:p_request.body.date,
-                //     time:p_request.body.time,
-                //     $or:[
-                //         {
-                //             phoneNumber:p_request.body.phoneNumber
-                //         },
-                //         {
-                //             firstName:p_request.body.firstName,
-                //             lastName:p_request.body.lastName
-                //         }
-                //     ]
-                // });
-
-                // if(existing_reservations.length > 0 && p_request.body.ignoreDuplicates !== true){
-                //     //this might be a potential duplicate reservation
-                //     p_response.send({
-                //         result:'found_duplicates',
-                //         existingReservations:existing_reservations,
-                //         message:'found the following reservations on the same date and time with either the same phoneNumber or firstName and lastName'
-                //     });
-                // }
-                // else{
-                //     //either there was no existing reservations, or the ignoreDuplicates flag is set
-                //     reservation = await reservation.save();
-                //     p_response.send({
-                //         result:'successful',
-                //         reservation:reservation,
-                //     });
-                // }
             }
             catch(e){
                 p_response.send({

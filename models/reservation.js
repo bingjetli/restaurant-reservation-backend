@@ -6,11 +6,12 @@ const reservation_schema = new mongoose.Schema({
     schemaVersion:{
         type:Number,
         required:true,
-        default:1.3, 
+        default:1.4, 
         /** schema changelog:
          * 1.1: firstName & lastName : uppercase:true -> lowercase:true
          * 1.2: added status as an optional field to the schema
          * 1.3: added `deleted` as an optional field to the schema
+         * 1.4: merged firstName and lastName into one field, added `allowSms` field
         */
     },
     date:{
@@ -32,13 +33,7 @@ const reservation_schema = new mongoose.Schema({
         type:String,
         required:true,
     },
-    firstName:{
-        type:String,
-        required:true,
-        trim:true,
-        lowercase:true,
-    },
-    lastName:{
+    name:{
         type:String,
         required:true,
         trim:true,
@@ -59,6 +54,9 @@ const reservation_schema = new mongoose.Schema({
         type:String,
         trim:true,
         lowercase:true,
+    },
+    allowSms:{
+        type:Boolean,
     },
 });
 

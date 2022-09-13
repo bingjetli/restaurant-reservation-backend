@@ -61,11 +61,8 @@ router.get('/', async (p_request, p_response) => {
                 if(p_request.query.seats){
                     search_query.seats = p_request.query.seats;
                 }
-                if(p_request.query.firstName){
-                    search_query.firstName = new RegExp(p_request.query.firstName, 'i');
-                }
-                if(p_request.query.lastName){
-                    search_query.lastName = new RegExp(p_request.query.lastName, 'i');
+                if(p_request.query.name){
+                    search_query.name = new RegExp(p_request.query.name, 'i');
                 }
                 if(p_request.query.phoneNumber){
                     //note: omit the + sign during querying, since it doesn't get recognized without an escape character
@@ -80,6 +77,9 @@ router.get('/', async (p_request, p_response) => {
                 if(p_request.query.includeDeleted === false || p_request.query.includeDeleted === undefined){
                     //do not include deleted reservations, or the specifier wasn't defined, we will not include delted reservations by default
                     search_query.deleted = false; //only search reservations that aren't deleted
+                }
+                if(p_request.query.hasOwnProperty('allowSms')){
+                    search_query.allowSms = p_request.query.allowSms;
                 }
 
                 //p_response.send(search_query);
@@ -135,8 +135,7 @@ router.post('/', async (p_request, p_response) => {
             date:p_request.body.date,
             time:p_request.body.time,
             seats:p_request.body.seats,
-            firstName:p_request.body.firstName,
-            lastName:p_request.body.lastName,
+            name:p_request.body.name,
             phoneNumber:p_request.body.phoneNumber,
             deleted:false,
         });
@@ -151,6 +150,9 @@ router.post('/', async (p_request, p_response) => {
         if(p_request.body.status && p_request.body.status.length > 0){
             new_reservation.status = p_request.body.status;
         }
+        if(p_request.body.hasOwnProperty('allowSms')){
+            new_reservation.allowSms = p_request.body.allowSms;
+        }
 
         //try to create the reservation in mongodb
         try{
@@ -162,8 +164,7 @@ router.post('/', async (p_request, p_response) => {
                         phoneNumber:p_request.body.phoneNumber
                     },
                     {
-                        firstName:p_request.body.firstName,
-                        lastName:p_request.body.lastName
+                        name:p_request.body.name,
                     }
                 ],
                 deleted:false,
@@ -175,7 +176,7 @@ router.post('/', async (p_request, p_response) => {
                     result:'found_duplicates',
                     reservation:new_reservation,
                     existingReservations:existing_reservations,
-                    message:'found the following reservations on the same date with either the same phoneNumber or firstName and lastName'
+                    message:'found the following reservations on the same date with either the same phoneNumber or name'
                 });
             }
             else{
@@ -217,11 +218,8 @@ router.put('/', async (p_request, p_response) => {
             if(p_request.body.seats){
                 update_query.seats = p_request.body.seats;
             }
-            if(p_request.body.firstName){
-                update_query.firstName = p_request.body.firstName;
-            }
-            if(p_request.body.lastName){
-                update_query.lastName = p_request.body.lastName;
+            if(p_request.body.name){
+                update_query.name = p_request.body.name;
             }
             if(p_request.body.phoneNumber){
                 update_query.phoneNumber = p_request.body.phoneNumber;
@@ -239,8 +237,11 @@ router.put('/', async (p_request, p_response) => {
             if(p_request.body.status){
                 update_query.status = p_request.body.status;
             }
-            if(p_request.body.deleted){
+            if(p_request.body.hasOwnProperty('deleted')){
                 update_query.deleted = p_request.body.deleted;
+            }
+            if(p_request.body.hasOwnProperty('allowSms')){
+                update_query.allowSms = p_request.body.allowSms;
             }
 
             //attempt to update the specified document id
@@ -250,67 +251,6 @@ router.put('/', async (p_request, p_response) => {
                 p_response.send({
                     result:'successful'
                 });
-
-                // //find the document id to update
-                // let reservation = await Reservation.findById(p_request.body.id);
-
-                // //update the reservation
-                // if(p_request.body.date){
-                //     reservation.date = p_request.body.date;
-                // }
-                // if(p_request.body.time){
-                //     reservation.time = p_request.body.time;
-                // }
-                // if(p_request.body.seats){
-                //     reservation.seats = p_request.body.seats;
-                // }
-                // if(p_request.body.firstName){
-                //     reservation.firstName = p_request.body.firstName;
-                // }
-                // if(p_request.body.lastName){
-                //     reservation.lastName = p_request.body.lastName;
-                // }
-                // if(p_request.body.phoneNumber){
-                //     reservation.phoneNumber = p_request.body.phoneNumber;
-                // }
-                // if(p_request.body.notes){
-                //     reservation.notes = p_request.body.notes;
-                // }
-                // if(p_request.body.tags){
-                //     reservation.tags = p_request.body.tags;
-                // }
-
-                // //check for duplicates, same date & time with either the same phone number or name
-                // const existing_reservations = await Reservation.find({
-                //     date:p_request.body.date,
-                //     time:p_request.body.time,
-                //     $or:[
-                //         {
-                //             phoneNumber:p_request.body.phoneNumber
-                //         },
-                //         {
-                //             firstName:p_request.body.firstName,
-                //             lastName:p_request.body.lastName
-                //         }
-                //     ]
-                // });
-
-                // if(existing_reservations.length > 0 && p_request.body.ignoreDuplicates !== true){
-                //     //this might be a potential duplicate reservation
-                //     p_response.send({
-                //         result:'found_duplicates',
-                //         existingReservations:existing_reservations,
-                //         message:'found the following reservations on the same date and time with either the same phoneNumber or firstName and lastName'
-                //     });
-                // }
-                // else{
-                //     //either there was no existing reservations, or the ignoreDuplicates flag is set
-                //     reservation = await reservation.save();
-                //     p_response.send({
-                //         result:'successful',
-                //         reservation:reservation,
-                //     });
-                // }
             }
             catch(e){
                 p_response.send({
