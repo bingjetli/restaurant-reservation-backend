@@ -34,8 +34,9 @@ app.use('/reservations', reservation_router);
 const tag_router = require('./routes/tag');
 app.use('/tags', tag_router);
 
-//start HTTP server - for renewing certificates
-//app.listen(80, () => console.log('server running on port 80'));
+//start HTTP server
+const http = require('http');
+http.createServer(app).listen(process.env.PORT + 1, () => console.log(`HTTP listening on ${process.env.PORT + 1}`));
 
 //start HTTPS server
 const https = require('https');
