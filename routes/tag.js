@@ -80,7 +80,7 @@ router.get('/', async (p_request, p_response) => {
         }
     }
     else {
-        p_response.sendStatus(process.env.API_KEY_REJECTION_RESPONSE_CODE);
+        p_response.sendStatus(process.env.API_REJECTION_CODE);
     }
 
 });
@@ -129,7 +129,7 @@ router.post('/', async (p_request, p_response) => {
         }
     }
     else {
-        p_response.sendStatus(process.env.API_KEY_REJECTION_RESPONSE_CODE);
+        p_response.sendStatus(process.env.API_REJECTION_CODE);
     }
 
 });
@@ -233,7 +233,7 @@ router.put('/', async (p_request, p_response) => {
         }
     }
     else {
-        p_response.sendStatus(process.env.API_KEY_REJECTION_RESPONSE_CODE);
+        p_response.sendStatus(process.env.API_REJECTION_CODE);
     }
 
 });
@@ -270,7 +270,7 @@ router.delete('/', async (p_request, p_response) => {
         }
     }
     else {
-        p_response.sendStatus(process.env.API_KEY_REJECTION_RESPONSE_CODE);
+        p_response.sendStatus(process.env.API_REJECTION_CODE);
     }
 
 });

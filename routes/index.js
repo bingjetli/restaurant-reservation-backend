@@ -16,7 +16,7 @@ router.get('/', (p_request, p_response) => {
         console.log('successful');
     } 
     else{
-        p_response.sendStatus(process.env.API_KEY_REJECTION_RESPONSE_CODE);
+        p_response.sendStatus(process.env.API_REJECTION_CODE);
         console.log('failed');
     }
 });
