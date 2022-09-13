@@ -7,6 +7,9 @@ if(process.env.NODE_ENV !== 'production'){
 const express = require('express');
 const app = express();
 
+//allow static files to be served, for SSL certbot
+app.use(express.static(__dirname + '/public', { dotfiles: 'allow' } ));
+
 //setup cross-origin-resource-sharing
 const cors = require('cors');
 app.use(cors());
@@ -32,4 +35,4 @@ const tag_router = require('./routes/tag');
 app.use('/tags', tag_router);
 
 //start server
-app.listen(process.env.PORT);
+app.listen(80, () => console.log('server running on port 80'));
