@@ -34,5 +34,14 @@ app.use('/reservations', reservation_router);
 const tag_router = require('./routes/tag');
 app.use('/tags', tag_router);
 
-//start server
-app.listen(80, () => console.log('server running on port 80'));
+//start HTTP server - for renewing certificates
+//app.listen(80, () => console.log('server running on port 80'));
+
+//start HTTPS server
+const https = require('https');
+const fs = require('fs');
+const options = {
+    key:fs.readFileSync('etc/letsencrypt/live/vustjohns.tk/privkey.pem'),
+    cert:fs.readFileSync('etc/letsencrypt/live/vustjohns.tk/fullchain.pem')
+};
+https.createServer(options, app).listen(process.env.PORT, () => console.log(`HTTPS listening on ${process.env.PORT}`));
