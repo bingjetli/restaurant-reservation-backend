@@ -33,11 +33,18 @@ router.get('/', async (p_request, p_response) => {
             else{
                 //time-off-request document id is not specified, build a search query
                 const search_query = {};
-                if(p_request.query.startDate){
-                    search_query.startDate = {$gte: p_request.query.startDate}
+                if(p_request.query.date){
+                    //if the client specifies a date, we look for all the time-off requests that have not expired as yet
+                    search_query.endDate = {$gte: p_request.query.date};
                 }
-                if(p_request.query.endDate){
-                    search_query.endDate = {$lte: p_request.query.endDate}
+                else{
+                    //else, we just search in a date range, this is mutually exclusive
+                    if(p_request.query.startDate){
+                        search_query.startDate = {$gte: p_request.query.startDate};
+                    }
+                    if(p_request.query.endDate){
+                        search_query.endDate = {$lte: p_request.query.endDate};
+                    }
                 }
                 if(p_request.query.name){
                     search_query.name = new RegExp(p_request.query.name, 'i');
