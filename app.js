@@ -31,6 +31,8 @@ const index_router = require('./routes/index');
 app.use('/', index_router);
 const reservation_router = require('./routes/reservation');
 app.use('/reservations', reservation_router);
+const time_off_request_router = require('./routes/time_off_request');
+app.use('/time-off-requests', time_off_request_router);
 const tag_router = require('./routes/tag');
 app.use('/tags', tag_router);
 
