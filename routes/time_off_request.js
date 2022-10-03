@@ -56,7 +56,7 @@ router.get('/', async (p_request, p_response) => {
 
                 if(Object.keys(search_query).length > 0){
                     //there is a search query provided, run the search query
-                    const matching_time_off_requests = await TimeOffRequest.find(search_query);
+                    const matching_time_off_requests = await TimeOffRequest.find(search_query).sort({startDate:1});
 
                     if(matching_time_off_requests.length > 0){
                         //found matching time-off-requests
