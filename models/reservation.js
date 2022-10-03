@@ -58,6 +58,10 @@ const reservation_schema = new mongoose.Schema({
     allowSms:{
         type:Boolean,
     },
+    updatedAt:{
+        type:String,
+        trim:true,
+    },
 });
 
 //export the schema as a new model, ProperCamelCase for model names

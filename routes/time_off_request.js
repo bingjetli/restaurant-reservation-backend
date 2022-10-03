@@ -193,6 +193,9 @@ router.put('/', async (p_request, p_response) => {
             if(p_request.body.hasOwnProperty('deleted')){
                 update_query.deleted = p_request.body.deleted;
             }
+            if(p_request.body.hasOwnProperty('updatedAt')){
+                update_query.updatedAt = p_request.body.updatedAt;
+            }
 
             //attempt to update the specified document id
             try{

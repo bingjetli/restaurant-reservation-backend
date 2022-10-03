@@ -243,6 +243,9 @@ router.put('/', async (p_request, p_response) => {
             if(p_request.body.hasOwnProperty('allowSms')){
                 update_query.allowSms = p_request.body.allowSms;
             }
+            if(p_request.body.hasOwnProperty('updatedAt')){
+                update_query.updatedAt = p_request.body.updatedAt;
+            }
 
             //attempt to update the specified document id
             try{

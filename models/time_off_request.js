@@ -43,6 +43,10 @@ const time_off_request_schema = new mongoose.Schema({
         lowercase:true,
         default:'pending',
     },
+    updatedAt:{
+        type:String,
+        trim:true,
+    },
 });
 
 //export the schema as a new model, ProperCamelCase for model names
