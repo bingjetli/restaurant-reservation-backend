@@ -124,8 +124,8 @@ router.post('/', async (p_request, p_response) => {
         try{
             //check if there are duplicate time-off requests before creating a new one
             const existing_time_off_requests = await TimeOffRequest.find({
-                startDate:{$gte:p_request.body.startDate},
-                endDate:{$lte:p_request.body.endDate},
+                startDate:{$lte:p_request.body.endDate},
+                endDate:{$gte:p_request.body.startDate},
                 name:new RegExp( '\\b' + p_request.body.name + '\\b', 'i'),
                 deleted:false,
             });
