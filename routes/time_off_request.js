@@ -56,7 +56,7 @@ router.get('/', async (p_request, p_response) => {
 
                 if(Object.keys(search_query).length > 0){
                     //there is a search query provided, run the search query
-                    const matching_time_off_requests = await TimeOffRequest.find(search_query).sort({startDate:1});
+                    const matching_time_off_requests = await TimeOffRequest.find(search_query).sort({startDate:1, name:1});
 
                     if(matching_time_off_requests.length > 0){
                         //found matching time-off-requests
@@ -125,6 +125,7 @@ router.post('/', async (p_request, p_response) => {
             //check if there are duplicate time-off requests before creating a new one
             const existing_time_off_requests = await TimeOffRequest.find({
                 startDate:{$gte:p_request.body.startDate},
+                endDate:{$lte:p_request.body.endDate},
                 name:new RegExp( '\\b' + p_request.body.name + '\\b', 'i'),
                 deleted:false,
             });
